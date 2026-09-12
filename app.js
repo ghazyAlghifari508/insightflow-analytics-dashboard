@@ -755,6 +755,42 @@
       if (csvBtn) {
         csvBtn.addEventListener('click', () => this.exportCSV());
       }
+      const jsonBtn = document.getElementById('btnExportJSON');
+      if (jsonBtn) {
+        jsonBtn.addEventListener('click', () => this.exportJSON());
+      }
+    },
+
+    exportJSON() {
+      const table = document.querySelector('.data-table');
+      if (!table) return;
+
+      const rows = Array.from(table.querySelectorAll('tbody tr:not(.empty-state-row)'));
+      const data = rows.map((row) => ({
+        productName: row.querySelector('.product-cell span')?.textContent.trim() || '',
+        category: row.querySelector('.cat-badge')?.textContent.trim() || '',
+        unitsSold: parseInt(row.children[2]?.textContent.trim().replace(/,/g, ''), 10) || 0,
+        revenue: parseFloat(row.children[3]?.textContent.trim().replace(/[$,]/g, '')) || 0,
+        margin: row.querySelector('.margin-bar-wrap span')?.textContent.trim() || '',
+        growth: row.children[5]?.textContent.trim() || '',
+        status: row.querySelector('.status-badge')?.textContent.trim() || ''
+      }));
+
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `insightflow-products-${new Date().toISOString().slice(0, 10)}.json`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      ToastEngine.show({
+        title: 'JSON Export Generated',
+        message: `Successfully downloaded ${data.length} product records as formatted JSON.`,
+        type: 'success',
+        duration: 3500
+      });
     },
 
     exportCSV() {
