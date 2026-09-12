@@ -563,6 +563,8 @@
   const TableEngine = {
     searchQuery: '',
     activeCategory: 'all',
+    currentPage: 1,
+    pageSize: 5,
 
     init() {
       const searchInput = document.getElementById('tableSearchInput');
@@ -571,6 +573,7 @@
       if (searchInput) {
         searchInput.addEventListener('input', (e) => {
           this.searchQuery = e.target.value.toLowerCase().trim();
+          this.currentPage = 1;
           this.filterRows();
         });
       }
@@ -581,12 +584,15 @@
             catPills.forEach(p => p.classList.remove('active'));
             pill.classList.add('active');
             this.activeCategory = pill.getAttribute('data-category').toLowerCase();
+            this.currentPage = 1;
             this.filterRows();
           });
         });
       }
 
       this.initSorting();
+      this.initPagination();
+      this.filterRows();
     },
 
     initSorting() {
@@ -636,8 +642,8 @@
       const table = document.querySelector('.data-table');
       if (!table) return;
 
-      const rows = table.querySelectorAll('tbody tr:not(.empty-state-row)');
-      let visibleCount = 0;
+      const rows = Array.from(table.querySelectorAll('tbody tr:not(.empty-state-row)'));
+      const matchingRows = [];
 
       rows.forEach((row) => {
         const text = row.textContent.toLowerCase();
@@ -650,16 +656,61 @@
           (this.activeCategory === 'ai' && catText.includes('ai'));
 
         if (matchesSearch && matchesCat) {
-          row.style.display = '';
-          visibleCount++;
+          matchingRows.push(row);
         } else {
           row.style.display = 'none';
         }
       });
 
+      // Pagination calculation
+      const total = matchingRows.length;
+      const totalPages = Math.ceil(total / this.pageSize) || 1;
+      if (this.currentPage > totalPages) this.currentPage = totalPages;
+      if (this.currentPage < 1) this.currentPage = 1;
+
+      const startIndex = (this.currentPage - 1) * this.pageSize;
+      const endIndex = Math.min(startIndex + this.pageSize, total);
+
+      matchingRows.forEach((row, idx) => {
+        if (idx >= startIndex && idx < endIndex) {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      });
+
+      // Update Pagination UI
+      const pagStart = document.getElementById('pagStart');
+      const pagEnd = document.getElementById('pagEnd');
+      const pagTotal = document.getElementById('pagTotal');
+      const pagPrev = document.getElementById('pagPrev');
+      const pagNext = document.getElementById('pagNext');
+      const pagNumbers = document.getElementById('pagNumbers');
+
+      if (pagStart) pagStart.textContent = total === 0 ? '0' : startIndex + 1;
+      if (pagEnd) pagEnd.textContent = endIndex;
+      if (pagTotal) pagTotal.textContent = total;
+      if (pagPrev) pagPrev.disabled = this.currentPage <= 1;
+      if (pagNext) pagNext.disabled = this.currentPage >= totalPages;
+
+      if (pagNumbers) {
+        pagNumbers.innerHTML = '';
+        for (let i = 1; i <= totalPages; i++) {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = `pag-num ${i === this.currentPage ? 'active' : ''}`;
+          btn.textContent = i;
+          btn.addEventListener('click', () => {
+            this.currentPage = i;
+            this.filterRows();
+          });
+          pagNumbers.appendChild(btn);
+        }
+      }
+
       // Handle Empty State
       let emptyRow = table.querySelector('.empty-state-row');
-      if (visibleCount === 0) {
+      if (total === 0) {
         if (!emptyRow) {
           emptyRow = document.createElement('tr');
           emptyRow.className = 'empty-state-row';
@@ -674,6 +725,27 @@
         emptyRow.style.display = '';
       } else if (emptyRow) {
         emptyRow.style.display = 'none';
+      }
+    },
+
+    initPagination() {
+      const pagPrev = document.getElementById('pagPrev');
+      const pagNext = document.getElementById('pagNext');
+
+      if (pagPrev) {
+        pagPrev.addEventListener('click', () => {
+          if (this.currentPage > 1) {
+            this.currentPage--;
+            this.filterRows();
+          }
+        });
+      }
+
+      if (pagNext) {
+        pagNext.addEventListener('click', () => {
+          this.currentPage++;
+          this.filterRows();
+        });
       }
     }
   };
