@@ -972,6 +972,41 @@
         <span class="ticker-text">${ev.icon} ${ev.text}</span>
       `;
     }
+    }
+  };
+
+  // AI Analytics Assistant Engine
+  const AIEngine = {
+    init() {
+      const drawer = document.getElementById('aiDrawer');
+      const overlay = document.getElementById('aiDrawerOverlay');
+      const closeBtn = document.getElementById('aiCloseBtn');
+      const viewMoreBtn = document.querySelector('.ai-view-more');
+
+      if (!drawer || !overlay) return;
+
+      const openDrawer = () => {
+        drawer.classList.add('active');
+        overlay.classList.add('active');
+        const input = document.getElementById('aiInput');
+        if (input) setTimeout(() => input.focus(), 300);
+      };
+
+      const closeDrawer = () => {
+        drawer.classList.remove('active');
+        overlay.classList.remove('active');
+      };
+
+      if (viewMoreBtn) viewMoreBtn.addEventListener('click', openDrawer);
+      if (closeBtn) closeBtn.addEventListener('click', closeDrawer);
+      if (overlay) overlay.addEventListener('click', closeDrawer);
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && drawer.classList.contains('active')) {
+          closeDrawer();
+        }
+      });
+    }
   };
 
   // Initialization
@@ -984,6 +1019,7 @@
     TableEngine.init();
     NotificationEngine.init();
     StreamEngine.init();
+    AIEngine.init();
     CounterEngine.animateAllKPIs();
     console.log('InsightFlow Analytics Dashboard initialized with theme:', AppState.theme);
   }
