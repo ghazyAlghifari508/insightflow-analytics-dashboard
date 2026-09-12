@@ -1642,6 +1642,107 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.25; letter-spacing: -0.02em; }
 .conf-val.medium { color: var(--amber);  }
 
 /* ═══════════════════════════════════════════════════════════
+   WHAT-IF SCENARIO PLANNER
+═══════════════════════════════════════════════════════════ */
+.whatif-section {
+  padding: 0 28px 24px;
+}
+.whatif-grid {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 28px;
+  align-items: center;
+}
+.whatif-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.whatif-slider-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.whatif-slider-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+.whatif-slider-header .slider-val {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--blue);
+  background: var(--blue-light);
+  padding: 2px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+}
+.whatif-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 6px;
+  background: var(--border);
+  border-radius: 99px;
+  outline: none;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+.whatif-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  background: var(--blue);
+  border: 2px solid white;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: transform 0.15s ease;
+}
+.whatif-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+}
+
+.whatif-outputs {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+.whatif-stat-card {
+  padding: 14px 18px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.whatif-stat-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.whatif-stat-val {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  letter-spacing: -0.03em;
+}
+.whatif-stat-delta {
+  font-size: 11.5px;
+  font-weight: 600;
+}
+.whatif-stat-delta.positive { color: var(--green); }
+.whatif-stat-delta.negative { color: var(--rose); }
+
+/* ═══════════════════════════════════════════════════════════
    FOOTER
 ═══════════════════════════════════════════════════════════ */
 .dashboard-footer {
