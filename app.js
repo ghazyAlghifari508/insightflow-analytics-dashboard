@@ -559,6 +559,80 @@
     }
   };
 
+  // Table Engine: Filtering, Search, and Category Management
+  const TableEngine = {
+    searchQuery: '',
+    activeCategory: 'all',
+
+    init() {
+      const searchInput = document.getElementById('tableSearchInput');
+      const catPills = document.querySelectorAll('.cat-pill');
+
+      if (searchInput) {
+        searchInput.addEventListener('input', (e) => {
+          this.searchQuery = e.target.value.toLowerCase().trim();
+          this.filterRows();
+        });
+      }
+
+      if (catPills.length) {
+        catPills.forEach((pill) => {
+          pill.addEventListener('click', () => {
+            catPills.forEach(p => p.classList.remove('active'));
+            pill.classList.add('active');
+            this.activeCategory = pill.getAttribute('data-category').toLowerCase();
+            this.filterRows();
+          });
+        });
+      }
+    },
+
+    filterRows() {
+      const table = document.querySelector('.data-table');
+      if (!table) return;
+
+      const rows = table.querySelectorAll('tbody tr:not(.empty-state-row)');
+      let visibleCount = 0;
+
+      rows.forEach((row) => {
+        const text = row.textContent.toLowerCase();
+        const catBadge = row.querySelector('.cat-badge');
+        const catText = catBadge ? catBadge.textContent.toLowerCase() : '';
+
+        const matchesSearch = !this.searchQuery || text.includes(this.searchQuery);
+        const matchesCat = this.activeCategory === 'all' || 
+          catText.includes(this.activeCategory) ||
+          (this.activeCategory === 'ai' && catText.includes('ai'));
+
+        if (matchesSearch && matchesCat) {
+          row.style.display = '';
+          visibleCount++;
+        } else {
+          row.style.display = 'none';
+        }
+      });
+
+      // Handle Empty State
+      let emptyRow = table.querySelector('.empty-state-row');
+      if (visibleCount === 0) {
+        if (!emptyRow) {
+          emptyRow = document.createElement('tr');
+          emptyRow.className = 'empty-state-row';
+          emptyRow.innerHTML = `
+            <td colspan="7" style="text-align:center;padding:32px;color:var(--text-muted);font-size:13px;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="margin:0 auto 8px;display:block;opacity:0.6;"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              No products found matching your search or category filter.
+            </td>
+          `;
+          table.querySelector('tbody').appendChild(emptyRow);
+        }
+        emptyRow.style.display = '';
+      } else if (emptyRow) {
+        emptyRow.style.display = 'none';
+      }
+    }
+  };
+
   // Initialization
   function initApp() {
     ThemeEngine.init();
@@ -566,6 +640,7 @@
     DateRangeEngine.init();
     CurrencyEngine.init();
     ChartEngine.init();
+    TableEngine.init();
     CounterEngine.animateAllKPIs();
     console.log('InsightFlow Analytics Dashboard initialized with theme:', AppState.theme);
   }
