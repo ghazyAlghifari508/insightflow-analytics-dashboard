@@ -1040,6 +1040,32 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.25; letter-spacing: -0.02em; }
   border-bottom: 1px solid var(--border);
   white-space: nowrap;
 }
+
+.data-table thead th.sortable {
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.15s ease;
+}
+.data-table thead th.sortable:hover {
+  color: var(--blue);
+}
+.data-table thead th.sortable .sort-arrow {
+  display: inline-block;
+  margin-left: 4px;
+  font-size: 9px;
+  opacity: 0.35;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+.data-table thead th.sortable.asc .sort-arrow {
+  opacity: 1;
+  color: var(--blue);
+  transform: rotate(0deg);
+}
+.data-table thead th.sortable.desc .sort-arrow {
+  opacity: 1;
+  color: var(--blue);
+  transform: rotate(180deg);
+}
 .data-table tbody tr {
   border-bottom: 1px solid var(--border-soft);
   transition: background 0.15s var(--ease-out);

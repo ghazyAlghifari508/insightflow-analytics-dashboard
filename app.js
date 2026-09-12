@@ -585,6 +585,51 @@
           });
         });
       }
+
+      this.initSorting();
+    },
+
+    initSorting() {
+      const headers = document.querySelectorAll('.data-table thead th.sortable');
+      const tbody = document.querySelector('.data-table tbody');
+      if (!headers.length || !tbody) return;
+
+      let currentSort = { col: null, asc: true };
+
+      headers.forEach((th, colIdx) => {
+        th.addEventListener('click', () => {
+          const isSameCol = currentSort.col === colIdx;
+          const asc = isSameCol ? !currentSort.asc : true;
+          currentSort = { col: colIdx, asc };
+
+          headers.forEach(h => h.classList.remove('asc', 'desc'));
+          th.classList.add(asc ? 'asc' : 'desc');
+
+          const rows = Array.from(tbody.querySelectorAll('tr:not(.empty-state-row)'));
+          rows.sort((a, b) => {
+            const aCell = a.children[colIdx]?.textContent.trim() || '';
+            const bCell = b.children[colIdx]?.textContent.trim() || '';
+
+            // Clean numeric comparison if possible
+            const aNum = parseFloat(aCell.replace(/[^0-9.-]+/g, ''));
+            const bNum = parseFloat(bCell.replace(/[^0-9.-]+/g, ''));
+
+            if (!isNaN(aNum) && !isNaN(bNum)) {
+              return asc ? aNum - bNum : bNum - aNum;
+            }
+            return asc ? aCell.localeCompare(bCell) : bCell.localeCompare(aCell);
+          });
+
+          rows.forEach(r => tbody.appendChild(r));
+
+          ToastEngine.show({
+            title: 'Table Sorted',
+            message: `Sorted by ${th.getAttribute('data-sort')} (${asc ? 'Ascending' : 'Descending'})`,
+            type: 'info',
+            duration: 2000
+          });
+        });
+      });
     },
 
     filterRows() {
