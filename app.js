@@ -422,9 +422,35 @@
       { month: 'July', rev: '$4,287,600', sales: '28,941', growth: '+12.7%' }
     ],
 
+    metrics: {
+      revenue: {
+        heights: [70, 100, 85, 130, 110, 150, 170],
+        yCoords: [130, 100, 115, 70, 90, 50, 30],
+        fill: '#2563EB',
+        yLabels: ['$5M', '$4M', '$3M', '$2M', '$1M', '$0'],
+        sub: 'Revenue & Sales Trend — Q2 2025'
+      },
+      profit: {
+        heights: [35, 60, 48, 82, 70, 98, 115],
+        yCoords: [165, 140, 152, 118, 130, 102, 85],
+        fill: '#8B5CF6',
+        yLabels: ['$3M', '$2.4M', '$1.8M', '$1.2M', '$600K', '$0'],
+        sub: 'Net Profit Margin Trend — Q2 2025'
+      },
+      orders: {
+        heights: [50, 75, 65, 110, 95, 135, 155],
+        yCoords: [150, 125, 135, 90, 105, 65, 45],
+        fill: '#14B8A6',
+        yLabels: ['35K', '28K', '21K', '14K', '7K', '0'],
+        sub: 'Order Volume & Fulfillment Trend — Q2 2025'
+      }
+    },
+
     init() {
       const chartArea = document.querySelector('.chart-area');
       if (!chartArea) return;
+
+      this.initTabs();
 
       // Create tooltip container if not exists
       let tooltip = document.querySelector('.chart-tooltip');
@@ -486,6 +512,48 @@
         });
         circle.addEventListener('mouseleave', () => {
           tooltip.style.display = 'none';
+        });
+      });
+    },
+
+    initTabs() {
+      const tabs = document.querySelectorAll('.chart-tab');
+      const chartCard = document.querySelector('.chart-card');
+      if (!tabs.length || !chartCard) return;
+
+      tabs.forEach((tab) => {
+        tab.addEventListener('click', () => {
+          tabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+
+          const metricKey = tab.getAttribute('data-metric');
+          const metricConfig = this.metrics[metricKey];
+          if (!metricConfig) return;
+
+          // Update chart subtitle
+          const sub = chartCard.querySelector('.card-sub');
+          if (sub && metricConfig.sub) sub.textContent = metricConfig.sub;
+
+          // Update bars
+          const rects = chartCard.querySelectorAll('.chart-svg rect');
+          rects.forEach((rect, idx) => {
+            rect.setAttribute('y', metricConfig.yCoords[idx]);
+            rect.setAttribute('height', metricConfig.heights[idx]);
+            rect.setAttribute('fill', metricConfig.fill);
+          });
+
+          // Update Y-axis labels
+          const yAxis = chartCard.querySelector('.chart-y-axis');
+          if (yAxis && metricConfig.yLabels) {
+            yAxis.innerHTML = metricConfig.yLabels.map(l => `<span>${l}</span>`).join('');
+          }
+
+          ToastEngine.show({
+            title: 'Chart View Updated',
+            message: `Now visualizing ${tab.textContent.trim()} data`,
+            type: 'info',
+            duration: 2500
+          });
         });
       });
     }
