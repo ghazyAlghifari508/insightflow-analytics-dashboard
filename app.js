@@ -1006,6 +1006,98 @@
           closeDrawer();
         }
       });
+
+      this.initChat();
+    },
+
+    answers: {
+      'why did revenue dip in may?': `<strong>May 2025 Root Cause Analysis:</strong><br><br>
+        1. <strong>Paid Acquisition Reduction:</strong> Marketing ad spend was curtailed by <strong>-14%</strong> while transitioning to a new attribution model.<br>
+        2. <strong>Enterprise Sales Cycle Lengthening:</strong> 4 high-value deals ($280k ACV) slipped from late May to early June.<br>
+        3. <strong>V-Shaped Recovery:</strong> June surged back to <strong>$3.80M (+46%)</strong> as delayed contracts closed simultaneously.`,
+
+      'summarize customer retention trends': `<strong>Executive Retention Summary:</strong><br><br>
+        • <strong>Net Retention Rate (NRR):</strong> 118.2% across mid-market and enterprise cohorts.<br>
+        • <strong>Gross Retention:</strong> Up to a record <strong>84.6%</strong> (8-month high).<br>
+        • <strong>Key Driver:</strong> API integration stickiness: customers using 2+ endpoints churn at under <strong>0.8%/month</strong>.`,
+
+      'forecast q4 2025 revenue': `<strong>Q4 2025 Revenue Prediction Model:</strong><br><br>
+        • <strong>Expected Range:</strong> $17.8M – $19.2M (Median: <strong>$18.4M</strong>).<br>
+        • <strong>Confidence Score:</strong> <strong>92.4%</strong> based on historical seasonal uplift and current pipeline coverage (3.8x quota).<br>
+        • <strong>Upside Catalyst:</strong> Product expansion into APAC enterprise tier.`,
+
+      'identify top churn risk factors': `<strong>Top Churn Risk Factors Detected:</strong><br><br>
+        1. <strong>Single-seat Accounts:</strong> Accounts with only 1 active seat churn <strong>4.2x faster</strong> than multi-seat workspaces.<br>
+        2. <strong>Low Export Activity:</strong> Teams creating 0 exports or API queries in the first 14 days have a <strong>68% churn likelihood</strong>.<br>
+        3. <strong>Billing Failures:</strong> Involuntary churn accounts for 22% of downgrades.`
+    },
+
+    initChat() {
+      const sendBtn = document.getElementById('aiSendBtn');
+      const input = document.getElementById('aiInput');
+      const chips = document.querySelectorAll('.ai-chip');
+
+      if (sendBtn && input) {
+        sendBtn.addEventListener('click', () => {
+          const text = input.value.trim();
+          if (text) {
+            this.handleUserMessage(text);
+            input.value = '';
+          }
+        });
+
+        input.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter') {
+            const text = input.value.trim();
+            if (text) {
+              this.handleUserMessage(text);
+              input.value = '';
+            }
+          }
+        });
+      }
+
+      chips.forEach((chip) => {
+        chip.addEventListener('click', () => {
+          const prompt = chip.getAttribute('data-prompt') || chip.textContent.trim();
+          this.handleUserMessage(prompt);
+        });
+      });
+    },
+
+    handleUserMessage(prompt) {
+      const chatBody = document.getElementById('aiChatBody');
+      if (!chatBody) return;
+
+      // Append user bubble
+      const userMsg = document.createElement('div');
+      userMsg.className = 'ai-msg user';
+      userMsg.innerHTML = `<div class="ai-msg-bubble">${prompt}</div>`;
+      chatBody.appendChild(userMsg);
+      chatBody.scrollTop = chatBody.scrollHeight;
+
+      // Append thinking bubble
+      const assistantMsg = document.createElement('div');
+      assistantMsg.className = 'ai-msg assistant';
+      const bubble = document.createElement('div');
+      bubble.className = 'ai-msg-bubble';
+      bubble.innerHTML = `<em>Thinking & querying data warehouse…</em>`;
+      assistantMsg.appendChild(bubble);
+      chatBody.appendChild(assistantMsg);
+      chatBody.scrollTop = chatBody.scrollHeight;
+
+      // Find answer
+      const key = prompt.toLowerCase().trim();
+      let matchedAnswer = this.answers[key];
+      if (!matchedAnswer) {
+        // Fallback contextual answer
+        matchedAnswer = `Based on the latest telemetry across <strong>${DateRangeEngine.data[AppState.dateRange]?.revenue?.period || 'the current period'}</strong>, our models observe healthy fundamentals. Total volume is currently running at <strong>$4.28M</strong> with a <strong>6.84%</strong> conversion rate. Projected growth remains robust at <strong>+18.4% YoY</strong>.`;
+      }
+
+      setTimeout(() => {
+        bubble.innerHTML = matchedAnswer;
+        chatBody.scrollTop = chatBody.scrollHeight;
+      }, 700);
     }
   };
 
