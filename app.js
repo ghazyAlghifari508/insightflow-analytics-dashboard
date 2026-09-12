@@ -1613,6 +1613,18 @@
       toggleBtn.addEventListener('click', () => toggleMenu());
       overlay.addEventListener('click', () => toggleMenu(false));
 
+      // Automatically detect and highlight active nav item based on current page URL
+      const currentPath = window.location.pathname.split('/').pop() || 'index.html';
+      const navLinks = sidebar.querySelectorAll('.nav-item');
+      navLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        if (href && (href === currentPath || (currentPath === '' && href === 'index.html'))) {
+          link.classList.add('active');
+        } else if (href && href !== '#' && !href.startsWith('javascript:')) {
+          link.classList.remove('active');
+        }
+      });
+
       // Close mobile drawer when clicking any nav item
       const navItems = sidebar.querySelectorAll('.nav-item');
       navItems.forEach(item => {
