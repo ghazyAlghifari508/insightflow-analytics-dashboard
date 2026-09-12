@@ -1574,10 +1574,47 @@
     }
   };
 
+  // Responsive Navigation Engine
+  const NavEngine = {
+    init() {
+      const toggleBtn = document.getElementById('mobileNavToggle');
+      const sidebar = document.querySelector('.sidebar');
+      const overlay = document.getElementById('sidebarOverlay');
+      if (!toggleBtn || !sidebar || !overlay) return;
+
+      const toggleMenu = (open) => {
+        const isOpen = typeof open === 'boolean' ? open : !sidebar.classList.contains('mobile-open');
+        sidebar.classList.toggle('mobile-open', isOpen);
+        overlay.classList.toggle('active', isOpen);
+        if (typeof AudioEngine !== 'undefined') AudioEngine.playClick();
+      };
+
+      toggleBtn.addEventListener('click', () => toggleMenu());
+      overlay.addEventListener('click', () => toggleMenu(false));
+
+      // Close mobile drawer when clicking any nav item
+      const navItems = sidebar.querySelectorAll('.nav-item');
+      navItems.forEach(item => {
+        item.addEventListener('click', () => {
+          if (window.innerWidth <= 992) {
+            toggleMenu(false);
+          }
+        });
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && sidebar.classList.contains('mobile-open')) {
+          toggleMenu(false);
+        }
+      });
+    }
+  };
+
   // Initialization
   function initApp() {
     ThemeEngine.init();
     AudioEngine.init();
+    NavEngine.init();
     ToastEngine.init();
     DateRangeEngine.init();
     CurrencyEngine.init();
