@@ -325,11 +325,97 @@
     }
   };
 
+  // Currency Converter Engine
+  const CurrencyEngine = {
+    rates: {
+      USD: { rate: 1, symbol: '$', code: 'USD' },
+      EUR: { rate: 0.92, symbol: '€', code: 'EUR' },
+      GBP: { rate: 0.78, symbol: '£', code: 'GBP' },
+      IDR: { rate: 16200, symbol: 'Rp ', code: 'IDR' }
+    },
+
+    init() {
+      const wrap = document.querySelector('.currency-wrap');
+      const btn = document.getElementById('currencyBtn');
+      const menu = document.getElementById('currencyMenu');
+
+      if (!btn || !wrap || !menu) return;
+
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        wrap.classList.toggle('active');
+        btn.setAttribute('aria-expanded', wrap.classList.contains('active'));
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!wrap.contains(e.target)) {
+          wrap.classList.remove('active');
+          btn.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      menu.querySelectorAll('.dropdown-item').forEach((item) => {
+        item.addEventListener('click', () => {
+          const currency = item.getAttribute('data-currency');
+          menu.querySelectorAll('.dropdown-item').forEach(i => i.classList.remove('active'));
+          item.classList.add('active');
+
+          const label = item.textContent.trim();
+          const btnLabel = btn.querySelector('.currency-symbol-label');
+          if (btnLabel) btnLabel.textContent = `${currency} (${this.rates[currency].symbol.trim()})`;
+
+          wrap.classList.remove('active');
+          btn.setAttribute('aria-expanded', 'false');
+
+          this.switchCurrency(currency);
+        });
+      });
+    },
+
+    switchCurrency(currency) {
+      AppState.currency = currency;
+      const { rate, symbol } = this.rates[currency];
+
+      // Update Revenue and AOV KPI cards
+      const revenueCard = document.querySelector('.kpi-card[data-kpi="revenue"]');
+      if (revenueCard) {
+        const valEl = revenueCard.querySelector('.kpi-value');
+        const baseUSD = DateRangeEngine.data[AppState.dateRange].revenue.val;
+        const converted = Math.round(baseUSD * rate);
+        const current = parseFloat(valEl.getAttribute('data-target')) || 0;
+        valEl.setAttribute('data-target', converted);
+        valEl.setAttribute('data-prefix', symbol);
+        CounterEngine.animateValue(valEl, current, converted, 800, symbol, '', 0);
+      }
+
+      const aovCard = document.querySelector('.kpi-card[data-kpi="aov"]');
+      if (aovCard) {
+        const valEl = aovCard.querySelector('.kpi-value');
+        const baseUSD = DateRangeEngine.data[AppState.dateRange].aov.val;
+        const converted = currency === 'IDR' ? Math.round(baseUSD * rate) : parseFloat((baseUSD * rate).toFixed(2));
+        const decimals = currency === 'IDR' ? 0 : 2;
+        const current = parseFloat(valEl.getAttribute('data-target')) || 0;
+        valEl.setAttribute('data-target', converted);
+        valEl.setAttribute('data-prefix', symbol);
+        valEl.setAttribute('data-decimals', decimals);
+        CounterEngine.animateValue(valEl, current, converted, 800, symbol, '', decimals);
+      }
+
+      ToastEngine.show({
+        title: 'Currency Converted',
+        message: `Metrics updated to ${currency} at current spot rates`,
+        type: 'success',
+        duration: 3000
+      });
+    }
+  };
+
   // Initialization
   function initApp() {
     ThemeEngine.init();
     ToastEngine.init();
     DateRangeEngine.init();
+    CurrencyEngine.init();
     CounterEngine.animateAllKPIs();
     console.log('InsightFlow Analytics Dashboard initialized with theme:', AppState.theme);
   }
