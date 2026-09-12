@@ -410,12 +410,74 @@
     }
   };
 
+  // Chart Interactive Engine
+  const ChartEngine = {
+    months: [
+      { month: 'January', rev: '$1,400,000', sales: '10,200', growth: '+5.4%' },
+      { month: 'February', rev: '$2,100,000', sales: '14,800', growth: '+8.1%' },
+      { month: 'March', rev: '$1,850,000', sales: '13,400', growth: '-4.2%' },
+      { month: 'April', rev: '$3,100,000', sales: '21,500', growth: '+15.2%' },
+      { month: 'May', rev: '$2,600,000', sales: '18,200', growth: '+6.3%' },
+      { month: 'June', rev: '$3,800,000', sales: '26,400', growth: '+18.4%' },
+      { month: 'July', rev: '$4,287,600', sales: '28,941', growth: '+12.7%' }
+    ],
+
+    init() {
+      const chartArea = document.querySelector('.chart-area');
+      if (!chartArea) return;
+
+      // Create tooltip container if not exists
+      let tooltip = document.querySelector('.chart-tooltip');
+      if (!tooltip) {
+        tooltip = document.createElement('div');
+        tooltip.className = 'chart-tooltip';
+        chartArea.appendChild(tooltip);
+      }
+
+      const rects = chartArea.querySelectorAll('.chart-svg rect');
+      rects.forEach((rect, idx) => {
+        const info = this.months[idx] || { month: `Period ${idx + 1}`, rev: 'N/A', sales: 'N/A', growth: '0%' };
+
+        rect.addEventListener('mouseenter', (e) => {
+          tooltip.innerHTML = `
+            <div class="chart-tooltip-date">${info.month} 2025</div>
+            <div class="chart-tooltip-row">Revenue: ${info.rev}</div>
+            <div style="color:var(--green);font-size:11px;margin-top:2px;">Sales: ${info.sales} (${info.growth})</div>
+          `;
+          tooltip.style.display = 'block';
+        });
+
+        rect.addEventListener('mousemove', (e) => {
+          const rectBounds = chartArea.getBoundingClientRect();
+          const x = e.clientX - rectBounds.left;
+          const y = e.clientY - rectBounds.top;
+          tooltip.style.left = `${x}px`;
+          tooltip.style.top = `${y}px`;
+        });
+
+        rect.addEventListener('mouseleave', () => {
+          tooltip.style.display = 'none';
+        });
+
+        rect.addEventListener('click', () => {
+          ToastEngine.show({
+            title: `${info.month} 2025 Details`,
+            message: `Recorded ${info.rev} revenue across ${info.sales} completed transactions.`,
+            type: 'info',
+            duration: 3500
+          });
+        });
+      });
+    }
+  };
+
   // Initialization
   function initApp() {
     ThemeEngine.init();
     ToastEngine.init();
     DateRangeEngine.init();
     CurrencyEngine.init();
+    ChartEngine.init();
     CounterEngine.animateAllKPIs();
     console.log('InsightFlow Analytics Dashboard initialized with theme:', AppState.theme);
   }
