@@ -592,6 +592,7 @@
 
       this.initSorting();
       this.initPagination();
+      this.initExport();
       this.filterRows();
     },
 
@@ -747,6 +748,51 @@
           this.filterRows();
         });
       }
+    },
+
+    initExport() {
+      const csvBtn = document.getElementById('btnExportCSV');
+      if (csvBtn) {
+        csvBtn.addEventListener('click', () => this.exportCSV());
+      }
+    },
+
+    exportCSV() {
+      const table = document.querySelector('.data-table');
+      if (!table) return;
+
+      const rows = Array.from(table.querySelectorAll('tbody tr:not(.empty-state-row)'));
+      const headers = ['Product Name', 'Category', 'Units Sold', 'Revenue', 'Margin', 'Growth', 'Status'];
+
+      const csvRows = [headers.join(',')];
+
+      rows.forEach((row) => {
+        const name = `"${row.querySelector('.product-cell span')?.textContent.trim() || ''}"`;
+        const cat = `"${row.querySelector('.cat-badge')?.textContent.trim() || ''}"`;
+        const units = `"${row.children[2]?.textContent.trim().replace(/,/g, '') || ''}"`;
+        const rev = `"${row.children[3]?.textContent.trim().replace(/[$,]/g, '') || ''}"`;
+        const margin = `"${row.querySelector('.margin-bar-wrap span')?.textContent.trim() || ''}"`;
+        const growth = `"${row.children[5]?.textContent.trim() || ''}"`;
+        const status = `"${row.querySelector('.status-badge')?.textContent.trim() || ''}"`;
+
+        csvRows.push([name, cat, units, rev, margin, growth, status].join(','));
+      });
+
+      const blob = new Blob([csvRows.join('\n')], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `insightflow-products-${new Date().toISOString().slice(0, 10)}.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      ToastEngine.show({
+        title: 'CSV Export Generated',
+        message: `Successfully downloaded ${rows.length} product records as CSV.`,
+        type: 'success',
+        duration: 3500
+      });
     }
   };
 
