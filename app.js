@@ -451,6 +451,7 @@
       if (!chartArea) return;
 
       this.initTabs();
+      this.initDonut();
 
       // Create tooltip container if not exists
       let tooltip = document.querySelector('.chart-tooltip');
@@ -554,6 +555,34 @@
             type: 'info',
             duration: 2500
           });
+        });
+      });
+    },
+
+    initDonut() {
+      const donutWrap = document.querySelector('.donut-wrap');
+      if (!donutWrap) return;
+
+      const valEl = donutWrap.querySelector('.donut-val');
+      const subEl = donutWrap.querySelector('.donut-sub');
+      const segments = donutWrap.querySelectorAll('.donut-segment, .donut-leg-item');
+
+      if (!valEl || !subEl) return;
+
+      const defaultVal = valEl.textContent;
+      const defaultSub = subEl.textContent;
+
+      segments.forEach((seg) => {
+        seg.addEventListener('mouseenter', () => {
+          const pct = seg.getAttribute('data-pct');
+          const label = seg.getAttribute('data-label');
+          if (pct) valEl.textContent = pct;
+          if (label) subEl.textContent = label;
+        });
+
+        seg.addEventListener('mouseleave', () => {
+          valEl.textContent = defaultVal;
+          subEl.textContent = defaultSub;
         });
       });
     }

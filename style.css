@@ -1371,17 +1371,38 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.25; letter-spacing: -0.02em; }
   width: 120px; height: 120px; flex-shrink: 0;
 }
 
+.donut-svg circle.donut-segment {
+  cursor: pointer;
+  transition: stroke-width 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease;
+}
+.donut-svg circle.donut-segment:hover {
+  stroke-width: 17;
+  opacity: 1 !important;
+}
+.donut-svg:has(circle.donut-segment:hover) circle.donut-segment:not(:hover) {
+  opacity: 0.45;
+}
+
 .donut-val {
   font-size: 14px; font-weight: 800;
   fill: var(--text-primary); font-family: var(--font);
+  transition: all 0.2s ease;
 }
 .donut-sub {
   font-size: 8px; font-weight: 500;
   fill: var(--text-muted); font-family: var(--font);
+  transition: all 0.2s ease;
 }
 
 .donut-legend { display: flex; flex-direction: column; gap: 8px; }
-.donut-leg-item { display: flex; align-items: center; gap: 7px; font-size: 12px; }
+.donut-leg-item {
+  display: flex; align-items: center; gap: 7px; font-size: 12px;
+  cursor: pointer;
+  padding: 3px 6px;
+  border-radius: 6px;
+  transition: background 0.15s ease;
+}
+.donut-leg-item:hover { background: var(--bg); }
 .dleg-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
 .dleg-dot.blue  { background: var(--blue);  }
 .dleg-dot.green { background: var(--green); }

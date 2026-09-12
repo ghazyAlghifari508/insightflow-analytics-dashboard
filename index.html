@@ -782,24 +782,24 @@
             <!-- Background circle -->
             <circle cx="60" cy="60" r="46" fill="none" stroke="#f1f5f9" stroke-width="14"/>
             <!-- New customers: 32% (circumference ~289) -->
-            <circle cx="60" cy="60" r="46" fill="none" stroke="#2563EB" stroke-width="14"
+            <circle class="donut-segment" data-pct="32%" data-label="New Users" cx="60" cy="60" r="46" fill="none" stroke="#2563EB" stroke-width="14"
               stroke-dasharray="92.5 196.5" stroke-dashoffset="0" stroke-linecap="round"
               transform="rotate(-90 60 60)"/>
             <!-- Returning: 52% -->
-            <circle cx="60" cy="60" r="46" fill="none" stroke="#10B981" stroke-width="14"
+            <circle class="donut-segment" data-pct="52%" data-label="Returning" cx="60" cy="60" r="46" fill="none" stroke="#10B981" stroke-width="14"
               stroke-dasharray="150.3 139"  stroke-dashoffset="-92.5" stroke-linecap="round"
               transform="rotate(-90 60 60)"/>
             <!-- Churned: 16% -->
-            <circle cx="60" cy="60" r="46" fill="none" stroke="#F59E0B" stroke-width="14"
+            <circle class="donut-segment" data-pct="16%" data-label="Churned" cx="60" cy="60" r="46" fill="none" stroke="#F59E0B" stroke-width="14"
               stroke-dasharray="46.2 243"   stroke-dashoffset="-242.8" stroke-linecap="round"
               transform="rotate(-90 60 60)"/>
             <text x="60" y="56" text-anchor="middle" class="donut-val">84.6%</text>
             <text x="60" y="70" text-anchor="middle" class="donut-sub">Retention</text>
           </svg>
           <div class="donut-legend">
-            <div class="donut-leg-item"><span class="dleg-dot blue"></span><span class="dleg-label">New</span><span class="dleg-val">32%</span></div>
-            <div class="donut-leg-item"><span class="dleg-dot green"></span><span class="dleg-label">Returning</span><span class="dleg-val">52%</span></div>
-            <div class="donut-leg-item"><span class="dleg-dot amber"></span><span class="dleg-label">Churned</span><span class="dleg-val">16%</span></div>
+            <div class="donut-leg-item" data-pct="32%" data-label="New Users"><span class="dleg-dot blue"></span><span class="dleg-label">New</span><span class="dleg-val">32%</span></div>
+            <div class="donut-leg-item" data-pct="52%" data-label="Returning"><span class="dleg-dot green"></span><span class="dleg-label">Returning</span><span class="dleg-val">52%</span></div>
+            <div class="donut-leg-item" data-pct="16%" data-label="Churned"><span class="dleg-dot amber"></span><span class="dleg-label">Churned</span><span class="dleg-val">16%</span></div>
           </div>
         </div>
       </div>
