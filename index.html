@@ -1170,6 +1170,64 @@
     </div>
   </section>
 
+  <!-- WHAT-IF SCENARIO SIMULATION STUDIO -->
+  <section class="whatif-section">
+    <div class="card whatif-card">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">Interactive What-If Scenario Planner</h2>
+          <p class="card-sub">Simulate revenue and margin impacts based on dynamic growth levers</p>
+        </div>
+        <button type="button" class="btn-outline sm" id="whatifResetBtn">Reset Levers</button>
+      </div>
+      <div class="whatif-grid">
+        <div class="whatif-controls">
+          <div class="whatif-slider-group">
+            <div class="whatif-slider-header">
+              <label for="sliderAdSpend">Ad Spend Expansion</label>
+              <span class="slider-val" id="valAdSpend">+15%</span>
+            </div>
+            <input type="range" min="-30" max="100" value="15" step="5" class="whatif-slider" id="sliderAdSpend" />
+          </div>
+
+          <div class="whatif-slider-group">
+            <div class="whatif-slider-header">
+              <label for="sliderPricing">Price Optimization</label>
+              <span class="slider-val" id="valPricing">+5%</span>
+            </div>
+            <input type="range" min="-20" max="50" value="5" step="1" class="whatif-slider" id="sliderPricing" />
+          </div>
+
+          <div class="whatif-slider-group">
+            <div class="whatif-slider-header">
+              <label for="sliderChurn">Churn Reduction</label>
+              <span class="slider-val" id="valChurn">-10%</span>
+            </div>
+            <input type="range" min="-50" max="10" value="-10" step="5" class="whatif-slider" id="sliderChurn" />
+          </div>
+        </div>
+
+        <div class="whatif-outputs">
+          <div class="whatif-stat-card">
+            <span class="whatif-stat-label">Projected Q3 Revenue</span>
+            <span class="whatif-stat-val" id="whatifProjectedRev">$19.82M</span>
+            <span class="whatif-stat-delta positive" id="whatifRevDelta">+7.7% vs baseline ($18.4M)</span>
+          </div>
+          <div class="whatif-stat-card">
+            <span class="whatif-stat-label">Projected Net Margin</span>
+            <span class="whatif-stat-val" id="whatifProjectedMargin">37.4%</span>
+            <span class="whatif-stat-delta positive" id="whatifMarginDelta">+2.2% vs baseline (35.2%)</span>
+          </div>
+          <div class="whatif-stat-card">
+            <span class="whatif-stat-label">Estimated Additional ARR</span>
+            <span class="whatif-stat-val" id="whatifAdditionalARR">+$1,420,000</span>
+            <span class="whatif-stat-delta positive">High feasibility confidence</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- ═══ FOOTER ═══ -->
   <footer class="dashboard-footer">
     <div class="footer-left">
