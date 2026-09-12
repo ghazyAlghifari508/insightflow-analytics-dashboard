@@ -1,0 +1,19 @@
+{
+  "name": "InsightFlow Analytics Dashboard",
+  "short_name": "InsightFlow",
+  "description": "Next-generation executive business intelligence & analytics platform",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#0B0F17",
+  "theme_color": "#2563EB",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["business", "productivity", "utilities"]
+}
