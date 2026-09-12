@@ -39,6 +39,7 @@
     toggle() {
       const nextTheme = AppState.theme === 'dark' ? 'light' : 'dark';
       this.applyTheme(nextTheme, true);
+      if (typeof AudioEngine !== 'undefined') AudioEngine.playClick();
     },
 
     applyTheme(theme, save = true) {
@@ -139,6 +140,13 @@
       toast.addEventListener('mouseleave', () => setTimeout(removeToast, 1500));
 
       this.container.appendChild(toast);
+      if (typeof AudioEngine !== 'undefined') {
+        if (type === 'success') {
+          AudioEngine.playChime();
+        } else {
+          AudioEngine.playPop();
+        }
+      }
       return toast;
     }
   };
@@ -1358,6 +1366,139 @@
     }
   };
 
+  // Micro-Haptic Web Audio API Synthesizer
+  const AudioEngine = {
+    ctx: null,
+    enabled: true,
+
+    init() {
+      const saved = localStorage.getItem('insightflow_audio');
+      if (saved !== null) {
+        this.enabled = saved === 'true';
+      }
+      this.updateBtnState();
+
+      const btn = document.getElementById('audioToggleBtn');
+      if (btn) {
+        btn.addEventListener('click', () => {
+          this.enabled = !this.enabled;
+          localStorage.setItem('insightflow_audio', this.enabled);
+          this.updateBtnState();
+          if (this.enabled) {
+            this.playChime();
+            ToastEngine.show({
+              title: 'Sound Effects Enabled',
+              message: 'Tactile UI audio feedback active',
+              type: 'info',
+              duration: 2000
+            });
+          } else {
+            ToastEngine.show({
+              title: 'Sound Effects Muted',
+              message: 'Audio feedback turned off',
+              type: 'info',
+              duration: 2000
+            });
+          }
+        });
+      }
+
+      const unlockAudio = () => {
+        if (this.ctx && this.ctx.state === 'suspended') {
+          this.ctx.resume();
+        }
+        window.removeEventListener('click', unlockAudio);
+        window.removeEventListener('keydown', unlockAudio);
+      };
+      window.addEventListener('click', unlockAudio);
+      window.addEventListener('keydown', unlockAudio);
+    },
+
+    updateBtnState() {
+      const btn = document.getElementById('audioToggleBtn');
+      if (!btn) return;
+      if (this.enabled) {
+        btn.classList.remove('muted');
+        btn.title = 'Sound Effects: On (Click to Mute)';
+        btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>`;
+      } else {
+        btn.classList.add('muted');
+        btn.title = 'Sound Effects: Muted (Click to Enable)';
+        btn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><line x1="23" y1="9" x2="17" y2="15"></line><line x1="17" y1="9" x2="23" y2="15"></line></svg>`;
+      }
+    },
+
+    getContext() {
+      if (!this.ctx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) this.ctx = new AudioContextClass();
+      }
+      return this.ctx;
+    },
+
+    playClick() {
+      if (!this.enabled) return;
+      try {
+        const ctx = this.getContext();
+        if (!ctx) return;
+        if (ctx.state === 'suspended') ctx.resume();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(800, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(300, ctx.currentTime + 0.03);
+        gain.gain.setValueAtTime(0.04, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.03);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.03);
+      } catch (e) {}
+    },
+
+    playPop() {
+      if (!this.enabled) return;
+      try {
+        const ctx = this.getContext();
+        if (!ctx) return;
+        if (ctx.state === 'suspended') ctx.resume();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(360, ctx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(720, ctx.currentTime + 0.06);
+        gain.gain.setValueAtTime(0.035, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.06);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.06);
+      } catch (e) {}
+    },
+
+    playChime() {
+      if (!this.enabled) return;
+      try {
+        const ctx = this.getContext();
+        if (!ctx) return;
+        if (ctx.state === 'suspended') ctx.resume();
+        [523.25, 659.25, 783.99].forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          const startTime = ctx.currentTime + idx * 0.05;
+          osc.frequency.setValueAtTime(freq, startTime);
+          gain.gain.setValueAtTime(0.025, startTime);
+          gain.gain.exponentialRampToValueAtTime(0.0001, startTime + 0.22);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(startTime);
+          osc.stop(startTime + 0.22);
+        });
+      } catch (e) {}
+    }
+  };
+
   // Keyboard Shortcuts Engine
   const ShortcutsEngine = {
     init() {
@@ -1436,6 +1577,7 @@
   // Initialization
   function initApp() {
     ThemeEngine.init();
+    AudioEngine.init();
     ToastEngine.init();
     DateRangeEngine.init();
     CurrencyEngine.init();
