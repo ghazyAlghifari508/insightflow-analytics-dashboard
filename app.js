@@ -900,6 +900,80 @@
     }
   };
 
+  // Live Activity Stream Simulation Engine
+  const StreamEngine = {
+    events: [
+      { icon: '🎉', text: 'New transaction: <strong>InsightPro Annual License</strong> purchased by <strong>Apex Digital ($4,800)</strong>' },
+      { icon: '🚀', text: 'Enterprise subscription upgraded: <strong>Quantum Cloud Labs</strong> upgraded to <strong>Custom Cluster ($12,500/mo)</strong>' },
+      { icon: '💳', text: 'Instant checkout: <strong>DataStream API</strong> purchased by <strong>FinTech Nordic ($890)</strong>' },
+      { icon: '🌍', text: 'Regional surge: <strong>APAC Server Region</strong> reached record traffic of <strong>4.2M req/sec</strong>' },
+      { icon: '✨', text: 'AI Insight generated: Automated retention model predicted <strong>+14% Q3 renewals</strong>' },
+      { icon: '🛍️', text: 'Cart recovery converted: <strong>DevSync Connect Enterprise</strong> completed <strong>($3,200)</strong>' }
+    ],
+    currentIndex: 0,
+    timer: null,
+
+    init() {
+      const toggleBtn = document.getElementById('liveToggleBtn');
+      const ticker = document.getElementById('liveTickerItem');
+      if (!ticker) return;
+
+      if (toggleBtn) {
+        toggleBtn.addEventListener('click', () => {
+          AppState.realtimeActive = !AppState.realtimeActive;
+          toggleBtn.textContent = AppState.realtimeActive ? 'Pause Stream' : 'Resume Stream';
+          toggleBtn.style.color = AppState.realtimeActive ? 'var(--text-muted)' : 'var(--amber)';
+
+          ToastEngine.show({
+            title: AppState.realtimeActive ? 'Live Stream Resumed' : 'Live Stream Paused',
+            message: AppState.realtimeActive ? 'Receiving real-time transaction events' : 'Real-time feed paused',
+            type: 'info',
+            duration: 2000
+          });
+
+          if (AppState.realtimeActive) {
+            this.start();
+          } else {
+            this.stop();
+          }
+        });
+      }
+
+      this.start();
+    },
+
+    start() {
+      this.stop();
+      this.timer = setInterval(() => {
+        if (!AppState.realtimeActive) return;
+        this.nextEvent();
+      }, 7500);
+    },
+
+    stop() {
+      if (this.timer) {
+        clearInterval(this.timer);
+        this.timer = null;
+      }
+    },
+
+    nextEvent() {
+      this.currentIndex = (this.currentIndex + 1) % this.events.length;
+      const ev = this.events[this.currentIndex];
+      const ticker = document.getElementById('liveTickerItem');
+      if (!ticker) return;
+
+      ticker.style.animation = 'none';
+      void ticker.offsetWidth; // trigger reflow
+      ticker.style.animation = 'tickerSlideIn 0.35s var(--ease-out)';
+
+      ticker.innerHTML = `
+        <span class="ticker-time">Just now</span>
+        <span class="ticker-text">${ev.icon} ${ev.text}</span>
+      `;
+    }
+  };
+
   // Initialization
   function initApp() {
     ThemeEngine.init();
@@ -909,6 +983,7 @@
     ChartEngine.init();
     TableEngine.init();
     NotificationEngine.init();
+    StreamEngine.init();
     CounterEngine.animateAllKPIs();
     console.log('InsightFlow Analytics Dashboard initialized with theme:', AppState.theme);
   }
