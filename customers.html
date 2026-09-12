@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Customer Analytics & Retention Cohorts — InsightFlow BI Dashboard" />
+  <meta name="theme-color" content="#2563EB" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <title>Customer Analytics — InsightFlow Business Intelligence</title>
+</head>
+<body>
+  <a href="#mainContent" class="skip-link">Skip to main content</a>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SIDEBAR NAVIGATION
+═══════════════════════════════════════════════════════════ -->
+<aside class="sidebar" role="navigation" aria-label="Main sidebar navigation">
+  <div class="sidebar-logo">
+    <div class="logo-icon">
+      <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+        <rect x="1" y="1" width="8" height="8" rx="2" fill="#2563EB"/>
+        <rect x="13" y="1" width="8" height="8" rx="2" fill="#10B981" opacity="0.8"/>
+        <rect x="1" y="13" width="8" height="8" rx="2" fill="#10B981" opacity="0.6"/>
+        <rect x="13" y="13" width="8" height="8" rx="2" fill="#2563EB" opacity="0.5"/>
+      </svg>
+    </div>
+    <div class="logo-text">
+      <span class="logo-name">InsightFlow</span>
+      <span class="logo-sub">Analytics</span>
+    </div>
+  </div>
+
+  <nav class="sidebar-nav">
+    <span class="nav-section-label">Overview</span>
+
+    <a href="index.html" class="nav-item">
+      <span class="nav-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>
+      </span>
+      <span>Dashboard</span>
+      <span class="nav-badge">Live</span>
+    </a>
+
+    <a href="sales.html" class="nav-item">
+      <span class="nav-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>
+      </span>
+      <span>Sales Analytics</span>
+    </a>
+
+    <a href="customers.html" class="nav-item active">
+      <span class="nav-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </span>
+      <span>Customer Analytics</span>
+    </a>
+
+    <a href="products.html" class="nav-item">
+      <span class="nav-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+      </span>
+      <span>Product Analytics</span>
+    </a>
+
+    <span class="nav-section-label">Performance</span>
+
+    <a href="marketing.html" class="nav-item">
+      <span class="nav-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 3h18v18H3zM9 9h6v6H9z" opacity="0.4"/><path d="M3 9h18M9 3v18"/></svg>
+      </span>
+      <span>Marketing Analytics</span>
+    </a>
+
+    <a href="inventory.html" class="nav-item">
+      <span class="nav-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 8h14M5 8a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v.5"/><path d="M5 8v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8"/><path d="M10 12l2 2 4-4"/></svg>
+      </span>
+      <span>Inventory</span>
+    </a>
+
+    <span class="nav-section-label">Intelligence</span>
+
+    <a href="reports.html" class="nav-item">
+      <span class="nav-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+      </span>
+      <span>Reports</span>
+    </a>
+
+    <a href="forecasting.html" class="nav-item">
+      <span class="nav-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+      </span>
+      <span>Forecasting</span>
+      <span class="nav-badge new">New</span>
+    </a>
+
+    <a href="settings.html" class="nav-item">
+      <span class="nav-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+      </span>
+      <span>Settings</span>
+    </a>
+  </nav>
+
+  <div class="sidebar-footer">
+    <div class="usage-card">
+      <div class="usage-label">
+        <span>NRR Benchmark</span>
+        <span class="usage-pct" style="color:var(--green)">124%</span>
+      </div>
+      <div class="usage-track">
+        <div class="usage-fill" style="width:100%; background:var(--green)"></div>
+      </div>
+      <span class="usage-sub">Net Retention Rate Q2</span>
+    </div>
+  </div>
+</aside>
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     MAIN CONTENT
+═══════════════════════════════════════════════════════════ -->
+<main class="main-content" id="mainContent" role="main">
+
+  <!-- TOP NAVIGATION -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="mobile-nav-toggle" id="mobileNavToggle" type="button" aria-label="Toggle Navigation Menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+      <div class="breadcrumb">
+        <span class="bc-root">InsightFlow</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        <span class="bc-current">Customer Analytics</span>
+      </div>
+      <div class="search-wrap">
+        <svg class="search-ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input class="search-input" type="search" placeholder="Search accounts, churn risks, segments…" />
+        <kbd class="search-kbd">⌘K</kbd>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="dropdown date-picker-wrap">
+        <button class="date-picker date-picker-btn" id="datePickerBtn" type="button" aria-haspopup="true" aria-expanded="false">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          <span class="selected-date-text">Last 30 Days (Jun 2025)</span>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="dropdown-menu date-picker-menu" id="datePickerMenu">
+          <button type="button" class="dropdown-item" data-range="today">Today</button>
+          <button type="button" class="dropdown-item" data-range="7d">Last 7 Days</button>
+          <button type="button" class="dropdown-item active" data-range="30d">Last 30 Days (Jun 2025)</button>
+          <button type="button" class="dropdown-item" data-range="q2">Q2 2025 (Apr – Jun)</button>
+          <button type="button" class="dropdown-item" data-range="ytd">Year to Date (2025)</button>
+          <button type="button" class="dropdown-item" data-range="1y">Full Year 2024</button>
+        </div>
+      </div>
+
+      <div class="dropdown currency-wrap">
+        <button class="icon-btn currency-btn" id="currencyBtn" type="button" aria-haspopup="true" aria-expanded="false" title="Switch Currency">
+          <span class="currency-symbol-label">USD ($)</span>
+        </button>
+        <div class="dropdown-menu currency-menu" id="currencyMenu">
+          <button type="button" class="dropdown-item active" data-currency="USD" data-rate="1" data-symbol="$">USD ($)</button>
+          <button type="button" class="dropdown-item" data-currency="EUR" data-rate="0.92" data-symbol="€">EUR (€)</button>
+          <button type="button" class="dropdown-item" data-currency="GBP" data-rate="0.78" data-symbol="£">GBP (£)</button>
+          <button type="button" class="dropdown-item" data-currency="IDR" data-rate="16200" data-symbol="Rp ">IDR (Rp)</button>
+        </div>
+      </div>
+      <button class="btn-export" id="exportReportBtn" title="Export printable executive report (PDF)">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Export Report
+      </button>
+      <button class="icon-btn audio-btn" id="audioToggleBtn" title="Toggle Sound Effects" aria-label="Toggle Sound Effects">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
+      </button>
+      <button class="icon-btn darkmode-btn" title="Toggle Dark Mode">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <div class="avatar-wrap">
+        <div class="avatar">AS</div>
+        <div class="avatar-info">
+          <span class="avatar-name">Arya Satria</span>
+          <span class="avatar-role">VP of Customer Success</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- PAGE HEADER -->
+  <section class="page-header">
+    <div>
+      <div class="page-eyebrow">Customer Intelligence</div>
+      <h1 class="page-title">Customer Retention & Cohort Health</h1>
+      <p class="page-sub">Monitor cohort retention longevity, net promoter score, and account renewal health</p>
+    </div>
+    <div class="page-header-actions">
+      <div class="live-badge" style="background:var(--green-light); color:var(--green)">
+        <span class="live-pulse"></span>
+        <span>Logo Churn: 0.82% (Historic Low)</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- KPI CARDS -->
+  <section class="kpi-grid">
+    <div class="kpi-card" data-kpi="active_accounts">
+      <div class="kpi-header">
+        <span class="kpi-icon-wrap blue">👥</span>
+        <span class="kpi-badge up">+14.2%</span>
+      </div>
+      <div class="kpi-num" data-target="18420">18,420</div>
+      <div class="kpi-lbl">Total Paying Accounts</div>
+      <div class="kpi-meta">+320 net new this month</div>
+    </div>
+
+    <div class="kpi-card" data-kpi="customer_ltv">
+      <div class="kpi-header">
+        <span class="kpi-icon-wrap green">💎</span>
+        <span class="kpi-badge up">+9.4%</span>
+      </div>
+      <div class="kpi-num" data-prefix="$" data-target="18650">$18,650</div>
+      <div class="kpi-lbl">Average Customer LTV</div>
+      <div class="kpi-meta">Up from $17,040 in Q1</div>
+    </div>
+
+    <div class="kpi-card" data-kpi="customer_cac">
+      <div class="kpi-header">
+        <span class="kpi-icon-wrap teal">🎯</span>
+        <span class="kpi-badge up">-6.5%</span>
+      </div>
+      <div class="kpi-num" data-prefix="$" data-target="1240">$1,240</div>
+      <div class="kpi-lbl">Blended CAC</div>
+      <div class="kpi-meta">Payback period: 4.2 months</div>
+    </div>
+
+    <div class="kpi-card" data-kpi="ltv_cac_ratio">
+      <div class="kpi-header">
+        <span class="kpi-icon-wrap purple">⚖️</span>
+        <span class="kpi-badge up">+1.8x</span>
+      </div>
+      <div class="kpi-num" data-suffix="x" data-target="15.0">15.0x</div>
+      <div class="kpi-lbl">LTV to CAC Ratio</div>
+      <div class="kpi-meta">Top quartile SaaS benchmark (>5x)</div>
+    </div>
+
+    <div class="kpi-card" data-kpi="net_promoter">
+      <div class="kpi-header">
+        <span class="kpi-icon-wrap amber">⭐</span>
+        <span class="kpi-badge up">+5 pts</span>
+      </div>
+      <div class="kpi-num" data-prefix="+" data-target="72">+72</div>
+      <div class="kpi-lbl">Net Promoter Score (NPS)</div>
+      <div class="kpi-meta">World class customer sentiment</div>
+    </div>
+
+    <div class="kpi-card" data-kpi="gross_churn">
+      <div class="kpi-header">
+        <span class="kpi-icon-wrap rose">🛡️</span>
+        <span class="kpi-badge up">-0.15%</span>
+      </div>
+      <div class="kpi-num" data-suffix="%" data-target="0.82">0.82%</div>
+      <div class="kpi-lbl">Monthly Logo Churn</div>
+      <div class="kpi-meta">Negative net MRR churn active</div>
+    </div>
+  </section>
+
+  <!-- RETENTION COHORT MATRIX -->
+  <div style="padding: 0 28px 20px;">
+    <div class="card table-card">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">Customer Retention Cohort Heatmap</h2>
+          <p class="card-sub">Percentage of paying organizations retained month-over-month</p>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Cohort Month</th>
+              <th>New Accounts</th>
+              <th>Month 0</th>
+              <th>Month 1</th>
+              <th>Month 2</th>
+              <th>Month 3</th>
+              <th>Month 4</th>
+              <th>Month 5</th>
+              <th>Month 6</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="font-weight:700;">Jan 2025</td>
+              <td>248 accounts</td>
+              <td><span class="cat-badge" style="background:#2563EB;color:white">100%</span></td>
+              <td><span class="cat-badge" style="background:var(--blue-mid);color:var(--blue)">97.2%</span></td>
+              <td><span class="cat-badge" style="background:var(--blue-mid);color:var(--blue)">95.8%</span></td>
+              <td><span class="cat-badge" style="background:var(--blue-mid);color:var(--blue)">94.5%</span></td>
+              <td><span class="cat-badge" style="background:var(--blue-mid);color:var(--blue)">93.8%</span></td>
+              <td><span class="cat-badge" style="background:var(--blue-mid);color:var(--blue)">93.2%</span></td>
+              <td><span class="cat-badge" style="background:var(--green-light);color:var(--green);font-weight:700;">92.6%</span></td>
+            </tr>
+            <tr>
+              <td style="font-weight:700;">Feb 2025</td>
+              <td>274 accounts</td>
+              <td><span class="cat-badge" style="background:#2563EB;color:white">100%</span></td>
+              <td><span class="cat-badge" style="background:var(--blue-mid);color:var(--blue)">98.1%</span></td>
+              <td><span class="cat-badge" style="background:var(--blue-mid);color:var(--blue)">96.4%</span></td>
+              <td><span class="cat-badge" style="background:var(--blue-mid);color:var(--blue)">95.2%</span></td>
+              <td><span class="cat-badge" style="background:var(--blue-mid);color:var(--blue)">94.8%</span></td>
+              <td><span class="cat-badge" style="background:var(--green-light);color:var(--green);font-weight:700;">94.1%</span></td>
+              <td style="color:var(--text-muted);">-</td>
+            </tr>
+            <tr>
+              <td style="font-weight:700;">Mar 2025</td>
+              <td>310 accounts</td>
+              <td><span class="cat-badge" style="background:#2563EB;color:white">100%</span></td>
+              <td><span class="cat-badge" style="background:var(--blue-mid);color:var(--blue)">98.5%</span></td>
+              <td><span class="cat-badge" style="background:var(--blue-mid);color:var(--blue)">97.1%</span></td>
+              <td><span class="cat-badge" style="background:var(--blue-mid);color:var(--blue)">96.2%</span></td>
+              <td><span class="cat-badge" style="background:var(--green-light);color:var(--green);font-weight:700;">95.7%</span></td>
+              <td style="color:var(--text-muted);">-</td>
+              <td style="color:var(--text-muted);">-</td>
+            </tr>
+            <tr>
+              <td style="font-weight:700;">Apr 2025</td>
+              <td>342 accounts</td>
+              <td><span class="cat-badge" style="background:#2563EB;color:white">100%</span></td>
+              <td><span class="cat-badge" style="background:var(--blue-mid);color:var(--blue)">98.8%</span></td>
+              <td><span class="cat-badge" style="background:var(--blue-mid);color:var(--blue)">97.9%</span></td>
+              <td><span class="cat-badge" style="background:var(--green-light);color:var(--green);font-weight:700;">97.4%</span></td>
+              <td style="color:var(--text-muted);">-</td>
+              <td style="color:var(--text-muted);">-</td>
+              <td style="color:var(--text-muted);">-</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOP KEY ACCOUNTS DIRECTORY -->
+  <div style="padding: 0 28px 28px;">
+    <div class="card table-card">
+      <div class="card-header">
+        <div>
+          <h2 class="card-title">Strategic Enterprise Accounts & Health Scores</h2>
+          <p class="card-sub">Top account usage health, license utilization, and renewal predictability</p>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Organization</th>
+              <th>Primary Contact</th>
+              <th>Seats / Licenses</th>
+              <th>Health Score</th>
+              <th>ARR Contribution</th>
+              <th>Renewal Date</th>
+              <th>Risk Assessment</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="product-cell">
+                  <div class="product-thumb">🏢</div>
+                  <div>
+                    <span style="font-weight:700;">Shopify HQ</span>
+                    <small>E-Commerce Platform · Canada</small>
+                  </div>
+                </div>
+              </td>
+              <td>David Mercer (VP Eng)</td>
+              <td>450 / 500 Seats</td>
+              <td><span class="cat-badge" style="background:var(--green-light); color:var(--green); font-weight:700;">98 / 100</span></td>
+              <td style="font-weight:700; color:var(--text-primary);">$148,000</td>
+              <td>Oct 2025</td>
+              <td><span class="status-badge active">Very Low Risk</span></td>
+            </tr>
+
+            <tr>
+              <td>
+                <div class="product-cell">
+                  <div class="product-thumb">⚡</div>
+                  <div>
+                    <span style="font-weight:700;">Vercel Inc.</span>
+                    <small>Cloud Hosting · San Francisco</small>
+                  </div>
+                </div>
+              </td>
+              <td>Guillermo R. (CEO)</td>
+              <td>220 / 250 Seats</td>
+              <td><span class="cat-badge" style="background:var(--green-light); color:var(--green); font-weight:700;">96 / 100</span></td>
+              <td style="font-weight:700; color:var(--text-primary);">$92,000</td>
+              <td>Dec 2025</td>
+              <td><span class="status-badge active">Expanding</span></td>
+            </tr>
+
+            <tr>
+              <td>
+                <div class="product-cell">
+                  <div class="product-thumb">💳</div>
+                  <div>
+                    <span style="font-weight:700;">Revolut Global</span>
+                    <small>Neobank · London</small>
+                  </div>
+                </div>
+              </td>
+              <td>Claire Zhang (Head of Data)</td>
+              <td>180 / 200 Seats</td>
+              <td><span class="cat-badge" style="background:var(--blue-light); color:var(--blue); font-weight:700;">91 / 100</span></td>
+              <td style="font-weight:700; color:var(--text-primary);">$74,500</td>
+              <td>Nov 2025</td>
+              <td><span class="status-badge active">Healthy</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <footer class="main-footer">
+    <span>InsightFlow Analytics Engine · Customer Intelligence Module</span>
+    <span>Connected to Real-Time Telemetry & Warehouse</span>
+  </footer>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
