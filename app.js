@@ -143,10 +143,59 @@
     }
   };
 
+  // Counter Animation Engine
+  const CounterEngine = {
+    animateValue(element, start, end, duration, prefix = '', suffix = '', decimals = 0) {
+      const startTime = performance.now();
+      const diff = end - start;
+
+      const step = (currentTime) => {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        // easeOutExpo
+        const ease = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
+        const current = start + diff * ease;
+
+        const formatted = current.toLocaleString('en-US', {
+          minimumFractionDigits: decimals,
+          maximumFractionDigits: decimals
+        });
+
+        element.textContent = `${prefix}${formatted}${suffix}`;
+
+        if (progress < 1) {
+          requestAnimationFrame(step);
+        }
+      };
+
+      requestAnimationFrame(step);
+    },
+
+    animateAllKPIs() {
+      const kpis = document.querySelectorAll('.kpi-value');
+      kpis.forEach((el) => {
+        const rawText = el.textContent.trim();
+        const prefix = rawText.startsWith('$') ? '$' : '';
+        const suffix = rawText.endsWith('%') ? '%' : '';
+        const cleanNumber = rawText.replace(/[^0-9.-]+/g, '');
+        const target = parseFloat(cleanNumber);
+        if (!isNaN(target)) {
+          const decimals = cleanNumber.includes('.') ? cleanNumber.split('.')[1].length : 0;
+          el.setAttribute('data-target', target);
+          el.setAttribute('data-prefix', prefix);
+          el.setAttribute('data-suffix', suffix);
+          el.setAttribute('data-decimals', decimals);
+          this.animateValue(el, 0, target, 1200, prefix, suffix, decimals);
+        }
+      });
+    }
+  };
+
   // Initialization
   function initApp() {
     ThemeEngine.init();
     ToastEngine.init();
+    CounterEngine.animateAllKPIs();
     console.log('InsightFlow Analytics Dashboard initialized with theme:', AppState.theme);
   }
 
