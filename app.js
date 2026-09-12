@@ -468,6 +468,26 @@
           });
         });
       });
+
+      const circles = chartArea.querySelectorAll('.chart-svg circle');
+      circles.forEach((circle, idx) => {
+        const info = this.months[idx] || { month: `Period ${idx + 1}`, sales: 'N/A' };
+        circle.addEventListener('mouseenter', () => {
+          tooltip.innerHTML = `
+            <div class="chart-tooltip-date">${info.month} Trend</div>
+            <div style="color:var(--green);font-weight:700;">Sales: ${info.sales}</div>
+          `;
+          tooltip.style.display = 'block';
+        });
+        circle.addEventListener('mousemove', (e) => {
+          const rectBounds = chartArea.getBoundingClientRect();
+          tooltip.style.left = `${e.clientX - rectBounds.left}px`;
+          tooltip.style.top = `${e.clientY - rectBounds.top}px`;
+        });
+        circle.addEventListener('mouseleave', () => {
+          tooltip.style.display = 'none';
+        });
+      });
     }
   };
 
