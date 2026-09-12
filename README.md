@@ -77,8 +77,15 @@ xdg-open index.html # On Linux
 
 ## 📂 Project Structure
 
-```
-├── index.html       # Authoritative HTML5 dashboard structure & semantic markup
+├── index.html       # Executive Overview Dashboard & Real-Time Stream
+├── sales.html       # Sales Analytics & Pipeline Velocity
+├── customers.html   # Customer Intelligence & Retention Cohorts
+├── products.html    # Product Telemetry & Feature Adoption
+├── marketing.html   # Demand Generation & Channel Attribution ROI
+├── inventory.html   # Inventory Operations & Warehouse Stock Control
+├── reports.html     # Executive Reports & Automated Export Dispatches
+├── forecasting.html # Predictive Modeling & Interactive What-If Simulator
+├── settings.html    # Platform Settings, API Tokens & Security Policies
 ├── style.css        # Pure CSS3 stylesheet (variables, components, animations, print)
 ├── app.js           # Modular ES6 controllers (Theme, Audio, Charts, Table, AI, Palette)
 ├── manifest.json    # Progressive Web App manifest

@@ -1343,16 +1343,35 @@
 
       switch (action) {
         case 'goto-dashboard':
-          window.scrollTo({ top: 0, behavior: 'smooth' });
+          if (window.location.pathname.endsWith('index.html') || window.location.pathname.endsWith('/')) {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          } else {
+            window.location.href = 'index.html';
+          }
           break;
         case 'goto-sales':
-          document.querySelector('.chart-card')?.scrollIntoView({ behavior: 'smooth' });
+          window.location.href = 'sales.html';
+          break;
+        case 'goto-customers':
+          window.location.href = 'customers.html';
           break;
         case 'goto-products':
-          document.querySelector('.table-card')?.scrollIntoView({ behavior: 'smooth' });
+          window.location.href = 'products.html';
           break;
-        case 'goto-whatif':
-          document.querySelector('.whatif-card')?.scrollIntoView({ behavior: 'smooth' });
+        case 'goto-marketing':
+          window.location.href = 'marketing.html';
+          break;
+        case 'goto-inventory':
+          window.location.href = 'inventory.html';
+          break;
+        case 'goto-reports':
+          window.location.href = 'reports.html';
+          break;
+        case 'goto-forecasting':
+          window.location.href = 'forecasting.html';
+          break;
+        case 'goto-settings':
+          window.location.href = 'settings.html';
           break;
         case 'action-darkmode':
           ThemeEngine.toggle();
