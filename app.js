@@ -1212,6 +1212,151 @@
     }
   };
 
+  // Command Palette Engine (Cmd+K / Ctrl+K)
+  const PaletteEngine = {
+    init() {
+      const overlay = document.getElementById('paletteOverlay');
+      const input = document.getElementById('paletteInput');
+      const body = document.getElementById('paletteBody');
+      const searchWrap = document.querySelector('.search-wrap');
+
+      if (!overlay || !input || !body) return;
+
+      const openPalette = () => {
+        overlay.classList.add('active');
+        input.value = '';
+        this.filterCommands('');
+        setTimeout(() => input.focus(), 150);
+      };
+
+      const closePalette = () => {
+        overlay.classList.remove('active');
+      };
+
+      if (searchWrap) {
+        searchWrap.addEventListener('click', (e) => {
+          e.preventDefault();
+          openPalette();
+        });
+      }
+
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) closePalette();
+      });
+
+      window.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+          e.preventDefault();
+          if (overlay.classList.contains('active')) {
+            closePalette();
+          } else {
+            openPalette();
+          }
+        } else if (e.key === 'Escape' && overlay.classList.contains('active')) {
+          closePalette();
+        }
+      });
+
+      input.addEventListener('input', (e) => {
+        this.filterCommands(e.target.value.toLowerCase().trim());
+      });
+
+      input.addEventListener('keydown', (e) => {
+        const items = Array.from(body.querySelectorAll('.palette-item:not([style*="display: none"])'));
+        if (!items.length) return;
+
+        let activeIdx = items.findIndex(item => item.classList.contains('active'));
+
+        if (e.key === 'ArrowDown') {
+          e.preventDefault();
+          if (activeIdx >= 0) items[activeIdx].classList.remove('active');
+          activeIdx = (activeIdx + 1) % items.length;
+          items[activeIdx].classList.add('active');
+          items[activeIdx].scrollIntoView({ block: 'nearest' });
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          if (activeIdx >= 0) items[activeIdx].classList.remove('active');
+          activeIdx = (activeIdx - 1 + items.length) % items.length;
+          items[activeIdx].classList.add('active');
+          items[activeIdx].scrollIntoView({ block: 'nearest' });
+        } else if (e.key === 'Enter') {
+          e.preventDefault();
+          if (activeIdx >= 0) {
+            this.executeAction(items[activeIdx].getAttribute('data-action'));
+            closePalette();
+          }
+        }
+      });
+
+      body.querySelectorAll('.palette-item').forEach((item) => {
+        item.addEventListener('click', () => {
+          this.executeAction(item.getAttribute('data-action'));
+          closePalette();
+        });
+      });
+    },
+
+    filterCommands(query) {
+      const body = document.getElementById('paletteBody');
+      if (!body) return;
+
+      const items = body.querySelectorAll('.palette-item');
+      let firstVisible = null;
+
+      items.forEach((item) => {
+        const text = item.textContent.toLowerCase();
+        if (!query || text.includes(query)) {
+          item.style.display = 'flex';
+          if (!firstVisible) firstVisible = item;
+        } else {
+          item.style.display = 'none';
+          item.classList.remove('active');
+        }
+      });
+
+      items.forEach(i => i.classList.remove('active'));
+      if (firstVisible) firstVisible.classList.add('active');
+    },
+
+    executeAction(action) {
+      if (!action) return;
+
+      switch (action) {
+        case 'goto-dashboard':
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+          break;
+        case 'goto-sales':
+          document.querySelector('.chart-card')?.scrollIntoView({ behavior: 'smooth' });
+          break;
+        case 'goto-products':
+          document.querySelector('.table-card')?.scrollIntoView({ behavior: 'smooth' });
+          break;
+        case 'goto-whatif':
+          document.querySelector('.whatif-card')?.scrollIntoView({ behavior: 'smooth' });
+          break;
+        case 'action-darkmode':
+          ThemeEngine.toggle();
+          break;
+        case 'action-ai':
+          document.getElementById('aiDrawer')?.classList.add('active');
+          document.getElementById('aiDrawerOverlay')?.classList.add('active');
+          break;
+        case 'action-export-csv':
+          TableEngine.exportCSV();
+          break;
+        case 'action-refresh':
+          CounterEngine.animateAllKPIs();
+          ToastEngine.show({
+            title: 'Data Synced',
+            message: 'Refreshed metrics with authoritative data warehouse',
+            type: 'success',
+            duration: 2500
+          });
+          break;
+      }
+    }
+  };
+
   // Initialization
   function initApp() {
     ThemeEngine.init();
@@ -1224,6 +1369,7 @@
     StreamEngine.init();
     AIEngine.init();
     WhatIfEngine.init();
+    PaletteEngine.init();
     CounterEngine.animateAllKPIs();
     console.log('InsightFlow Analytics Dashboard initialized with theme:', AppState.theme);
   }
