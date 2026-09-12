@@ -1196,6 +1196,48 @@
 
 </main>
 
+  <!-- AI ANALYTICS ASSISTANT DRAWER -->
+  <div class="ai-drawer-overlay" id="aiDrawerOverlay"></div>
+  <aside class="ai-drawer" id="aiDrawer" aria-label="AI Analytics Assistant">
+    <div class="ai-drawer-header">
+      <div class="ai-drawer-title-wrap">
+        <div class="ai-sparkle-icon">✦</div>
+        <div>
+          <div class="ai-drawer-title">InsightFlow AI Assistant</div>
+          <span class="ai-model-badge">Gemini Flash Analytics</span>
+        </div>
+      </div>
+      <button type="button" class="ai-close-btn" id="aiCloseBtn" aria-label="Close Assistant">&times;</button>
+    </div>
+
+    <div class="ai-chat-body" id="aiChatBody">
+      <div class="ai-msg assistant">
+        <div class="ai-msg-bubble">
+          Hello Arya! 👋 I'm your AI Business Intelligence copilot. I have indexed all <strong>Q2 2025 revenue streams, customer churn telemetry, and product unit sales</strong>. How can I assist your executive analysis today?
+        </div>
+      </div>
+    </div>
+
+    <div class="ai-quick-prompts">
+      <span class="ai-quick-prompts-label">Suggested Analyses</span>
+      <div class="ai-prompt-chips">
+        <button type="button" class="ai-chip" data-prompt="Why did revenue dip in May?">Why did revenue dip in May?</button>
+        <button type="button" class="ai-chip" data-prompt="Summarize customer retention trends">Summarize retention trends</button>
+        <button type="button" class="ai-chip" data-prompt="Forecast Q4 2025 revenue">Forecast Q4 2025 revenue</button>
+        <button type="button" class="ai-chip" data-prompt="Identify top churn risk factors">Top churn risk factors</button>
+      </div>
+    </div>
+
+    <div class="ai-drawer-footer">
+      <div class="ai-input-wrap">
+        <input type="text" class="ai-input" id="aiInput" placeholder="Ask AI about metrics, anomalies, or forecasts…" />
+        <button type="button" class="ai-send-btn" id="aiSendBtn" aria-label="Send prompt">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+    </div>
+  </aside>
+
   <script src="app.js"></script>
 </body>
 </html>
