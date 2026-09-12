@@ -439,6 +439,102 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.25; letter-spacing: -0.02em; }
   to { opacity: 1; transform: translateY(0); }
 }
 
+.notif-panel {
+  width: 320px;
+  padding: 0;
+  overflow: hidden;
+  border-radius: var(--radius);
+}
+.notif-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-soft);
+}
+.notif-header h4 {
+  font-size: 13px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.notif-count-badge {
+  background: var(--blue-light);
+  color: var(--blue);
+  font-size: 10px;
+  padding: 1px 6px;
+  border-radius: 99px;
+  font-weight: 700;
+}
+.notif-mark-read {
+  font-size: 11px;
+  color: var(--blue);
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
+.notif-mark-read:hover { text-decoration: underline; }
+.notif-list {
+  max-height: 280px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+.notif-item {
+  display: flex;
+  gap: 10px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border-soft);
+  transition: background 0.15s ease;
+  cursor: pointer;
+}
+.notif-item:hover { background: var(--bg); }
+.notif-item.unread {
+  background: rgba(37, 99, 235, 0.04);
+}
+.notif-item-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 13px;
+}
+.notif-item-icon.blue { background: var(--blue-light); color: var(--blue); }
+.notif-item-icon.green { background: var(--green-light); color: var(--green); }
+.notif-item-icon.amber { background: var(--amber-light); color: var(--amber); }
+
+.notif-item-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.3;
+}
+.notif-item-time {
+  font-size: 10.5px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+.notif-footer {
+  padding: 10px;
+  text-align: center;
+  border-top: 1px solid var(--border-soft);
+  background: var(--surface);
+}
+.notif-footer-btn {
+  background: none;
+  border: none;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+.notif-footer-btn:hover { color: var(--blue); }
+
 .btn-export {
   display: flex; align-items: center; gap: 7px;
   padding: 7px 15px;
