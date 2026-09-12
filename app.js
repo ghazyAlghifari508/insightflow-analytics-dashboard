@@ -1101,6 +1101,88 @@
     }
   };
 
+  // What-If Scenario Planner Engine
+  const WhatIfEngine = {
+    baseRev: 18.4,
+    baseMargin: 35.2,
+
+    init() {
+      const sliderAd = document.getElementById('sliderAdSpend');
+      const sliderPrice = document.getElementById('sliderPricing');
+      const sliderChurn = document.getElementById('sliderChurn');
+      const resetBtn = document.getElementById('whatifResetBtn');
+
+      if (!sliderAd || !sliderPrice || !sliderChurn) return;
+
+      const updateScenario = () => {
+        const adVal = parseFloat(sliderAd.value);
+        const priceVal = parseFloat(sliderPrice.value);
+        const churnVal = parseFloat(sliderChurn.value);
+
+        // Update Slider Labels
+        const lblAd = document.getElementById('valAdSpend');
+        const lblPrice = document.getElementById('valPricing');
+        const lblChurn = document.getElementById('valChurn');
+
+        if (lblAd) lblAd.textContent = `${adVal >= 0 ? '+' : ''}${adVal}%`;
+        if (lblPrice) lblPrice.textContent = `${priceVal >= 0 ? '+' : ''}${priceVal}%`;
+        if (lblChurn) lblChurn.textContent = `${churnVal >= 0 ? '+' : ''}${churnVal}%`;
+
+        // Calculate Projections
+        const revFactor = 1 + (adVal * 0.35 / 100) + (priceVal * 0.85 / 100) - (churnVal * 0.45 / 100);
+        const projectedRev = Math.max(10, parseFloat((this.baseRev * revFactor).toFixed(2)));
+        const revDeltaPct = (((projectedRev - this.baseRev) / this.baseRev) * 100).toFixed(1);
+
+        const projectedMargin = Math.max(15, parseFloat((this.baseMargin + (priceVal * 0.38) - (adVal * 0.1) - (churnVal * 0.15)).toFixed(1)));
+        const marginDeltaPct = (projectedMargin - this.baseMargin).toFixed(1);
+
+        const additionalARR = Math.round((projectedRev - this.baseRev) * 1000000);
+
+        // Update Outputs
+        const elRev = document.getElementById('whatifProjectedRev');
+        const elRevDelta = document.getElementById('whatifRevDelta');
+        const elMargin = document.getElementById('whatifProjectedMargin');
+        const elMarginDelta = document.getElementById('whatifMarginDelta');
+        const elARR = document.getElementById('whatifAdditionalARR');
+
+        if (elRev) elRev.textContent = `$${projectedRev}M`;
+        if (elRevDelta) {
+          elRevDelta.textContent = `${revDeltaPct >= 0 ? '+' : ''}${revDeltaPct}% vs baseline ($18.4M)`;
+          elRevDelta.className = `whatif-stat-delta ${revDeltaPct >= 0 ? 'positive' : 'negative'}`;
+        }
+
+        if (elMargin) elMargin.textContent = `${projectedMargin}%`;
+        if (elMarginDelta) {
+          elMarginDelta.textContent = `${marginDeltaPct >= 0 ? '+' : ''}${marginDeltaPct}% vs baseline (35.2%)`;
+          elMarginDelta.className = `whatif-stat-delta ${marginDeltaPct >= 0 ? 'positive' : 'negative'}`;
+        }
+
+        if (elARR) {
+          elARR.textContent = `${additionalARR >= 0 ? '+' : '-'}$${Math.abs(additionalARR).toLocaleString('en-US')}`;
+        }
+      };
+
+      sliderAd.addEventListener('input', updateScenario);
+      sliderPrice.addEventListener('input', updateScenario);
+      sliderChurn.addEventListener('input', updateScenario);
+
+      if (resetBtn) {
+        resetBtn.addEventListener('click', () => {
+          sliderAd.value = 15;
+          sliderPrice.value = 5;
+          sliderChurn.value = -10;
+          updateScenario();
+          ToastEngine.show({
+            title: 'Scenario Reset',
+            message: 'What-If levers restored to baseline model',
+            type: 'info',
+            duration: 2000
+          });
+        });
+      }
+    }
+  };
+
   // Initialization
   function initApp() {
     ThemeEngine.init();
@@ -1112,6 +1194,7 @@
     NotificationEngine.init();
     StreamEngine.init();
     AIEngine.init();
+    WhatIfEngine.init();
     CounterEngine.animateAllKPIs();
     console.log('InsightFlow Analytics Dashboard initialized with theme:', AppState.theme);
   }
