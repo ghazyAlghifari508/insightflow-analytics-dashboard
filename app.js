@@ -1361,8 +1361,26 @@
   // Keyboard Shortcuts Engine
   const ShortcutsEngine = {
     init() {
+      const overlay = document.getElementById('shortcutsOverlay');
+      const closeBtn = document.getElementById('closeShortcutsBtn');
+
+      if (overlay) {
+        overlay.addEventListener('click', (e) => {
+          if (e.target === overlay) this.closeShortcutsModal();
+        });
+      }
+
+      if (closeBtn) {
+        closeBtn.addEventListener('click', () => this.closeShortcutsModal());
+      }
+
       window.addEventListener('keydown', (e) => {
         const isEditing = ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName);
+
+        if (e.key === 'Escape') {
+          this.closeShortcutsModal();
+          return;
+        }
 
         if (e.key === '?' && !isEditing) {
           e.preventDefault();
@@ -1395,17 +1413,21 @@
       });
     },
 
-    toggleShortcutsModal() {
+    closeShortcutsModal() {
       const modal = document.getElementById('shortcutsModal');
       const overlay = document.getElementById('shortcutsOverlay');
-      if (!modal || !overlay) return;
+      if (modal) modal.classList.remove('active');
+      if (overlay) overlay.classList.remove('active');
+    },
 
-      const isOpen = modal.classList.contains('active');
-      if (isOpen) {
-        modal.classList.remove('active');
-        overlay.classList.remove('active');
+    toggleShortcutsModal() {
+      const overlay = document.getElementById('shortcutsOverlay');
+      if (!overlay) return;
+      if (overlay.classList.contains('active')) {
+        this.closeShortcutsModal();
       } else {
-        modal.classList.add('active');
+        const modal = document.getElementById('shortcutsModal');
+        if (modal) modal.classList.add('active');
         overlay.classList.add('active');
       }
     }
