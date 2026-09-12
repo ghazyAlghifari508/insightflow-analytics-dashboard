@@ -1355,6 +1355,60 @@
           break;
       }
     }
+    }
+  };
+
+  // Keyboard Shortcuts Engine
+  const ShortcutsEngine = {
+    init() {
+      window.addEventListener('keydown', (e) => {
+        const isEditing = ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName);
+
+        if (e.key === '?' && !isEditing) {
+          e.preventDefault();
+          this.toggleShortcutsModal();
+          return;
+        }
+
+        if (isEditing) return;
+
+        if (e.key.toLowerCase() === 'd') {
+          e.preventDefault();
+          ThemeEngine.toggle();
+        } else if (e.key.toLowerCase() === 'r') {
+          e.preventDefault();
+          CounterEngine.animateAllKPIs();
+          ToastEngine.show({
+            title: 'Dashboard Refreshed',
+            message: 'All counter animations and metrics re-rendered',
+            type: 'info',
+            duration: 2000
+          });
+        } else if (e.key === '/') {
+          e.preventDefault();
+          const tableSearch = document.getElementById('tableSearchInput');
+          if (tableSearch) {
+            tableSearch.focus();
+            tableSearch.select();
+          }
+        }
+      });
+    },
+
+    toggleShortcutsModal() {
+      const modal = document.getElementById('shortcutsModal');
+      const overlay = document.getElementById('shortcutsOverlay');
+      if (!modal || !overlay) return;
+
+      const isOpen = modal.classList.contains('active');
+      if (isOpen) {
+        modal.classList.remove('active');
+        overlay.classList.remove('active');
+      } else {
+        modal.classList.add('active');
+        overlay.classList.add('active');
+      }
+    }
   };
 
   // Initialization
@@ -1370,6 +1424,7 @@
     AIEngine.init();
     WhatIfEngine.init();
     PaletteEngine.init();
+    ShortcutsEngine.init();
     CounterEngine.animateAllKPIs();
     console.log('InsightFlow Analytics Dashboard initialized with theme:', AppState.theme);
   }
