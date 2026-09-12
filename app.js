@@ -796,6 +796,18 @@
       if (jsonBtn) {
         jsonBtn.addEventListener('click', () => this.exportJSON());
       }
+      const reportBtn = document.getElementById('exportReportBtn');
+      if (reportBtn) {
+        reportBtn.addEventListener('click', () => {
+          ToastEngine.show({
+            title: 'Generating Report',
+            message: 'Preparing document layout for print & PDF export…',
+            type: 'info',
+            duration: 2000
+          });
+          setTimeout(() => window.print(), 350);
+        });
+      }
     },
 
     exportJSON() {
@@ -1351,6 +1363,15 @@
           break;
         case 'action-export-csv':
           TableEngine.exportCSV();
+          break;
+        case 'action-export-pdf':
+          ToastEngine.show({
+            title: 'Generating Report',
+            message: 'Preparing document layout for print & PDF export…',
+            type: 'info',
+            duration: 2000
+          });
+          setTimeout(() => window.print(), 350);
           break;
         case 'action-refresh':
           CounterEngine.animateAllKPIs();
