@@ -830,6 +830,74 @@
         duration: 3500
       });
     }
+    }
+  };
+
+  // Notification Center Engine
+  const NotificationEngine = {
+    unreadCount: 3,
+
+    init() {
+      const wrap = document.querySelector('.notif-wrap');
+      const btn = document.getElementById('notifBtn');
+      const markReadBtn = document.getElementById('notifMarkRead');
+      const clearBtn = document.getElementById('notifClearBtn');
+      const notifList = document.getElementById('notifList');
+      const notifDot = document.getElementById('notifDot');
+      const notifCount = document.getElementById('notifCount');
+
+      if (!btn || !wrap) return;
+
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        wrap.classList.toggle('active');
+        btn.setAttribute('aria-expanded', wrap.classList.contains('active'));
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!wrap.contains(e.target)) {
+          wrap.classList.remove('active');
+          btn.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      if (markReadBtn) {
+        markReadBtn.addEventListener('click', () => {
+          this.unreadCount = 0;
+          if (notifDot) notifDot.style.display = 'none';
+          if (notifCount) notifCount.textContent = '0 New';
+          const unreadItems = wrap.querySelectorAll('.notif-item.unread');
+          unreadItems.forEach(item => item.classList.remove('unread'));
+          ToastEngine.show({
+            title: 'Notifications Cleared',
+            message: 'All notifications marked as read',
+            type: 'info',
+            duration: 2500
+          });
+        });
+      }
+
+      if (clearBtn && notifList) {
+        clearBtn.addEventListener('click', () => {
+          this.unreadCount = 0;
+          if (notifDot) notifDot.style.display = 'none';
+          if (notifCount) notifCount.textContent = '0 New';
+          notifList.innerHTML = `
+            <div style="padding:32px 16px;text-align:center;color:var(--text-muted);font-size:12.5px;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="margin:0 auto 8px;display:block;opacity:0.6;"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+              You're all caught up! No notifications.
+            </div>
+          `;
+          wrap.classList.remove('active');
+          ToastEngine.show({
+            title: 'Notification Center',
+            message: 'Notification inbox cleared',
+            type: 'info',
+            duration: 2000
+          });
+        });
+      }
+    }
   };
 
   // Initialization
@@ -840,6 +908,7 @@
     CurrencyEngine.init();
     ChartEngine.init();
     TableEngine.init();
+    NotificationEngine.init();
     CounterEngine.animateAllKPIs();
     console.log('InsightFlow Analytics Dashboard initialized with theme:', AppState.theme);
   }
