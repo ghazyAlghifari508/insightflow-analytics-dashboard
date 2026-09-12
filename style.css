@@ -743,6 +743,51 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.25; letter-spacing: -0.02em; }
   overflow: visible;
 }
 
+.chart-svg rect {
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.2s ease, fill 0.2s ease;
+}
+.chart-svg rect:hover {
+  opacity: 1 !important;
+  filter: drop-shadow(0 2px 8px rgba(37,99,235,0.45));
+}
+.chart-svg:has(rect:hover) rect:not(:hover) {
+  opacity: 0.45;
+}
+
+/* Floating Chart Tooltip */
+.chart-tooltip {
+  position: absolute;
+  padding: 8px 12px;
+  background: var(--surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-lg);
+  font-size: 11.5px;
+  pointer-events: none;
+  z-index: 1000;
+  display: none;
+  backdrop-filter: blur(8px);
+  white-space: nowrap;
+  transform: translate(-50%, -100%);
+  margin-top: -8px;
+}
+.chart-tooltip-date {
+  font-weight: 700;
+  color: var(--text-secondary);
+  font-size: 10.5px;
+  margin-bottom: 2px;
+}
+.chart-tooltip-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--blue);
+}
+
 .chart-x-axis {
   display: flex;
   justify-content: space-between;
