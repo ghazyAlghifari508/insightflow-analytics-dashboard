@@ -151,6 +151,18 @@
           <button type="button" class="dropdown-item" data-range="1y">Full Year 2024</button>
         </div>
       </div>
+
+      <div class="dropdown currency-wrap">
+        <button class="icon-btn currency-btn" id="currencyBtn" type="button" aria-haspopup="true" aria-expanded="false" title="Switch Currency">
+          <span class="currency-symbol-label">USD ($)</span>
+        </button>
+        <div class="dropdown-menu currency-menu" id="currencyMenu">
+          <button type="button" class="dropdown-item active" data-currency="USD" data-rate="1" data-symbol="$">USD ($)</button>
+          <button type="button" class="dropdown-item" data-currency="EUR" data-rate="0.92" data-symbol="€">EUR (€)</button>
+          <button type="button" class="dropdown-item" data-currency="GBP" data-rate="0.78" data-symbol="£">GBP (£)</button>
+          <button type="button" class="dropdown-item" data-currency="IDR" data-rate="16200" data-symbol="Rp ">IDR (Rp)</button>
+        </div>
+      </div>
       <button class="btn-export">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         Export Report
