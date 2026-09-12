@@ -995,6 +995,35 @@ h1, h2, h3, h4 { font-weight: 700; line-height: 1.25; letter-spacing: -0.02em; }
   gap: 8px;
 }
 
+.category-pills {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.cat-pill {
+  padding: 4px 10px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 99px;
+  font-family: var(--font);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.cat-pill:hover {
+  border-color: var(--blue);
+  color: var(--text-primary);
+}
+.cat-pill.active {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: white;
+}
+
 .table-wrap { overflow-x: auto; }
 
 .data-table {
